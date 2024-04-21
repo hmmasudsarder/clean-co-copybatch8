@@ -66,7 +66,7 @@ const Login = () => {
           <p className="text-center text-sm">
             Don&apos;t have an account ?{' '}
             <NavLink
-              to="/signup"
+              to="/register"
               className="text-primary font-bold hover:underline cursor-pointer "
             >
               Sign Up
