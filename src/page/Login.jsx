@@ -3,11 +3,13 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import useAuth from '../hooks/useAuth';
 import toast from 'react-hot-toast';
+import useAxios from '../hooks/useAxios';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, googleLogin } = useAuth();
+  const axios = useAxios();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -15,7 +17,9 @@ const Login = () => {
     const toastId = toast.loading('Logging in ...');
 
     try {
-      await login(email, password);
+      const user = await login(email, password);
+      const res = await axios.post("access-token", {email: user.user.email})
+      console.log(res);
       toast.success('Logged in', { id: toastId });
       navigate('/');
     } catch (error) {

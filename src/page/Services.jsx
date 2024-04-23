@@ -1,9 +1,24 @@
 import Header from '../components/ui/Header';
 import Container from '../components/ui/Container';
-import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import useAxios from '../hooks/useAxios';
+import ServiceCard from '../components/ServiceCard';
+
 
 const Services = () => {
-  const [services, setServices] = useState([]);
+const axios = useAxios();
+
+  const getService = async() => {
+    const res = await axios.get('/services');
+    return res; 
+  }
+
+  const {data:services, isLoading, isError} = useQuery({
+    queryKey: ['service'],
+    queryFn: getService,
+  })
+
+// console.log(d.data);
 
   return (
     <>
@@ -18,6 +33,9 @@ const Services = () => {
       <Container className="mb-64">
         <div className="grid grid-cols-3 gap-10">
           {/* Service Cards goes here */}
+          {
+            services?.data?.map((item) => (<ServiceCard key={item.id} service={item} />))
+          }
         </div>
       </Container>
     </>
